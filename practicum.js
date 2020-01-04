@@ -80,34 +80,38 @@ function getSentencePosition (wordArray, sentenceArray) {
 	return wordArray;
 };
 
-let paragraph = 'Take this paragraph of text and return an alphabetized list of ALL unique words. A unique word is any form of a word often communicated with essentially the same meaning. For example, dish and dishes could be defined as a unique word by using their stem dish. For each unique word found in this entire paragraph, determine the how many times the word appears in total. Also, provide an analysis of what sentence index position or positions the word is found. The following words should not be included in your analysis or result set: "a", "the", "and", "of", "in", "be", "also" and "as"! Your final result MUST be displayed in a readable console output in the same format as the JSON sample object shown below.';
 // convert to lowercase to avoid words like 'cat' and 'Cat' from showing up twice
-paragraph = paragraph.toLowerCase();
+function parseParagraph(paragraph) {
+  paragraph = paragraph.toLowerCase();
 
-// remove punctuation from paragraph. exclude period to get sentence array
-paragraph = paragraph.replace(/[,\/#!$%\^&\*;:{}=\-_`~()"]/g,'');
+  // remove punctuation from paragraph. exclude period to get sentence array
+  paragraph = paragraph.replace(/[,\/#!$%\^&\*;:{}=\-_`~()"]/g,'');
 
-// create array of sentences
-let aSentences = paragraph.split(".");
+  // create array of sentences
+  let aSentences = paragraph.split(".");
 
-let wordPara = formatParagraph(paragraph);
+  let wordPara = formatParagraph(paragraph);
 
-// create array of words
-let wordSet = wordPara.split(" ");
+  // create array of words
+  let wordSet = wordPara.split(" ");
 
-// create alphabetized array of words
-wordSet = wordSet.sort();
+  // create alphabetized array of words
+  wordSet = wordSet.sort();
 
-// handle words with the same stem
-wordSet = handleStemWords(wordSet);
+  // handle words with the same stem
+  wordSet = handleStemWords(wordSet);
 
-// get counts of words
-let wordArray = getWordCount(wordSet);
-	
+  // get counts of words
+  let wordArray = getWordCount(wordSet);
+    
 
-// get position of words in sentences
-wordArray = getSentencePosition(wordArray, aSentences);
+  // get position of words in sentences
+  wordArray = getSentencePosition(wordArray, aSentences);
 
-const result = { results: wordArray };
+  const result = { results: wordArray };
 
-console.log(result);
+  return JSON.stringify(result, 0, 2);
+}
+
+const paragraph = 'Take this paragraph of text and return an alphabetized list of ALL unique words. A unique word is any form of a word often communicated with essentially the same meaning. For example, dish and dishes could be defined as a unique word by using their stem dish. For each unique word found in this entire paragraph, determine the how many times the word appears in total. Also, provide an analysis of what sentence index position or positions the word is found. The following words should not be included in your analysis or result set: "a", "the", "and", "of", "in", "be", "also" and "as"! Your final result MUST be displayed in a readable console output in the same format as the JSON sample object shown below.';
+console.log(parseParagraph(paragraph));
